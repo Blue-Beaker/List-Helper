@@ -53,8 +53,15 @@ class $modify(MyMenuLayer, MenuLayer) {
 		 * See this page for more info about buttons
 		 * https://docs.geode-sdk.org/tutorials/buttons
 		*/
+
+		auto sprite = CircleButtonSprite::createWithSpriteFrameName(
+			"GJ_listAddBtn_001.png",
+			1.0f,
+			CircleBaseColor::Green,
+			CircleBaseSize::Medium
+		);
 		auto myButton = CCMenuItemSpriteExtra::create(
-			CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png"),
+			sprite,
 			this,
 			/**
 			 * Here we use the name we set earlier for our modify class.

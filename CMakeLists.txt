@@ -8,6 +8,9 @@ else()
 endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+# # Set the target platform for Geode
+# set(GEODE_TARGET_PLATFORM "Win64")
+
 project(CustomizedLists VERSION 1.0.0)
 
 # Add all source files inside src (recursively)
