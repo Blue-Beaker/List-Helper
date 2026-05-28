@@ -1,0 +1,88 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Macos be like
+**/.DS_Store
+
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Ignore build folders
+**/build
+# Ignore platform specific build folders
+build-*/
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# VS Code user-specific settings (keep tasks.json, launch.json, extensions.json)
+.vscode/*.code-snippets
+.vscode/settings.json
+.vscode/extensions.json
+
+# Local History for Visual Studio Code
+.history/
+
+# clangd
+.cache/
+
+# Visual Studio
+.vs/
+
+# Geode mod package output
+*.geode
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+compile_commands.json
+Makefile
+build.ninja
+.ninja_deps
+.ninja_log
+
+# xwin cache
+.xwin-cache/
+
+# CLion
+.idea/
+/cmake-build-*/
+
+# Krita/kate cache
+*.*~
