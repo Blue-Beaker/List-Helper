@@ -24,8 +24,8 @@ using namespace geode::prelude;
  *
  * struct MyMenuLayer : Modify<MyMenuLayer, MenuLayer> {};
  */
-#include <Geode/modify/MenuLayer.hpp>
-class $modify(MyMenuLayer, MenuLayer) {
+#include <Geode/modify/CreatorLayer.hpp>
+class $modify(MyMenuLayer, CreatorLayer) {
 	/**
 	 * Typically classes in GD are initialized using the `init` function, (though not always!),
 	 * so here we use it to add our own button to the bottom menu.
@@ -38,7 +38,7 @@ class $modify(MyMenuLayer, MenuLayer) {
 		 * We call the original init function so that the
 		 * original class is properly initialized.
 		 */
-		if (!MenuLayer::init()) {
+		if (!CreatorLayer::init()) {
 			return false;
 		}
 
@@ -58,7 +58,7 @@ class $modify(MyMenuLayer, MenuLayer) {
 			"GJ_listAddBtn_001.png",
 			1.0f,
 			CircleBaseColor::Green,
-			CircleBaseSize::Medium
+			CircleBaseSize::SmallAlt
 		);
 		auto myButton = CCMenuItemSpriteExtra::create(
 			sprite,
@@ -74,7 +74,7 @@ class $modify(MyMenuLayer, MenuLayer) {
 		 * Node IDs are a Geode feature, see this page for more info about it:
 		 * https://docs.geode-sdk.org/tutorials/nodetree
 		*/
-		auto menu = this->getChildByID("bottom-menu");
+		auto menu = this->getChildByID("bottom-right-menu");
 		menu->addChild(myButton);
 
 		/**
@@ -102,6 +102,9 @@ class $modify(MyMenuLayer, MenuLayer) {
 	 * return type `void` and taking a `CCObject*`.
 	*/
 	void onMyButton(CCObject*) {
-		FLAlertLayer::create("Geode", "Hello from my custom mod!", "OK")->show();
+		// FLAlertLayer::create("Geode", "Hello from my custom mod!", "OK")->show();
+		auto myLevelBrowser = LevelBrowserLayer::create(GJSearchObject::create(SearchType::SavedLevels));
+		// myLevelBrowser->setupLevelBrowser(CCArray::create());
+		myLevelBrowser->show();
 	}
 };
