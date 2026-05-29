@@ -1,12 +1,7 @@
-/**
- * Include the Geode headers.
- */
-#include <Geode/Geode.hpp>
+#include "main.hpp"
+#include "CustomizeListPopup.hpp"
 
-/**
- * Brings cocos2d and all Geode namespaces to the current scope.
- */
-using namespace geode::prelude;
+gd::string levelString = "";
 
 /**
  * `$modify` lets you extend and modify GD's classes.
@@ -101,10 +96,13 @@ class $modify(MyMenuLayer, CreatorLayer) {
 	 * The signature for button callbacks must always be the same,
 	 * return type `void` and taking a `CCObject*`.
 	*/
+
 	void onMyButton(CCObject*) {
 		// FLAlertLayer::create("Geode", "Hello from my custom mod!", "OK")->show();
-		auto myLevelBrowser = LevelBrowserLayer::create(GJSearchObject::create(SearchType::SavedLevels));
-		// myLevelBrowser->setupLevelBrowser(CCArray::create());
-		myLevelBrowser->show();
+		// auto myLevelBrowser = LevelBrowserLayer::create(GJSearchObject::create(SearchType::SavedLevels));
+		// // myLevelBrowser->setupLevelBrowser(CCArray::create());
+		// myLevelBrowser->show();
+		auto popup = CustomizeListPopup::create(levelString);
+		popup->show();
 	}
 };
