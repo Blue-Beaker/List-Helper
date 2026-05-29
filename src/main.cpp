@@ -18,7 +18,6 @@ class $modify(MyLevelCell, LevelCell) {
 		if(level->m_levelID<=100){
 			return;
 		}
-
 		// If the level is actually a list, return
 		if (dynamic_cast<GJLevelList*>(level)) {
 			return;
@@ -41,22 +40,30 @@ class $modify(MyLevelCell, LevelCell) {
         // Remove old node
 		this->removeChildByID("inListsMenu"_spr);
 
-		// If not contained in any lists, do not add the button
+		// If not contained in any lists, hide
 		if(m_fields->createdListNames.empty() && m_fields->favListNames.empty()){
+			return;
+		}
+		// In list view, if only 1 list contained this(probably the currently viewing list), hide
+		if(m_compactView && (m_fields->createdListNames.size() + m_fields->favListNames.size() <=1)){
 			return;
 		}
 		
 		// Add the button
 		auto labelSprite = CCSprite::createWithSpriteFrameName("GJ_listAddBtn_001.png");
-		labelSprite->setScale(0.45);
+		if(this->m_compactView){
+			labelSprite->setScale(0.3);
+		}else{
+			labelSprite->setScale(0.45);
+		}
 
 		auto listsCountLabel = CCLabelBMFont::create(
 			fmt::format("{}/{}",m_fields->createdListNames.size(),m_fields->favListNames.size()).c_str(), "bigFont.fnt"
 		);
 		listsCountLabel->setID("listsCountLabel"_spr);
-		listsCountLabel->setScale(0.8);
-		listsCountLabel->setPosition(35,-5);
-		listsCountLabel->setAnchorPoint(ccp(1,0));
+		listsCountLabel->setScale(std::min(1.0f,90.0f/listsCountLabel->getContentWidth()));
+		listsCountLabel->setPosition(35,labelSprite->getContentHeight()/2);
+		listsCountLabel->setAnchorPoint(ccp(0,0.5));
 		labelSprite->addChild(listsCountLabel);
 
 		auto listsButton = CCMenuItemSpriteExtra::create(
@@ -71,7 +78,14 @@ class $modify(MyLevelCell, LevelCell) {
 		menu->setID("listsMenu"_spr);
 		menu->addChild(listsButton);
 		menu->alignItemsHorizontallyWithPadding(2.0f);
-		menu->setPosition(340,70);
+		
+		if(this->m_compactView){
+			// List
+			menu->setPosition(260,8.5);
+		}else{
+			// Level Search, Saved levels...
+			menu->setPosition(310,70);
+		}
 
 		auto main_layer = this->getChildByID("main-layer");
 		main_layer->addChild(menu);
