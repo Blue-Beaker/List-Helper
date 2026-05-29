@@ -119,6 +119,18 @@ class $modify(MyLevelCell, LevelCell) {
 	void loadFromLevel(GJGameLevel* level) {
 		
 		LevelCell::loadFromLevel(level);
+
+		if(level->m_levelID<=100){
+			return;
+		}
+
+		// If the level is actually a list, return
+		if (dynamic_cast<GJLevelList*>(level)) {
+			return;
+		}
+
+
+
 		m_fields->levelName = level->m_levelName;
 
 		auto manager = GameLevelManager::get();
