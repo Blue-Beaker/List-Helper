@@ -106,3 +106,86 @@ class $modify(MyMenuLayer, CreatorLayer) {
 		popup->show();
 	}
 };
+
+#include <Geode/modify/LevelCell.hpp>
+
+class $modify(MyLevelCell, LevelCell) {
+	struct Fields {
+		std::list<gd::string> listNames = {};
+	};
+
+	void loadFromLevel(GJGameLevel* level) {
+		
+		LevelCell::loadFromLevel(level);
+
+		auto manager = GameLevelManager::get();
+
+		int matched_count = 0;
+		m_fields->listNames.clear();
+		auto lists = manager->getSavedLevelLists(0);
+		if (lists) {
+			for (auto i = 0; i < lists->count(); i++) {
+				auto list = static_cast<GJLevelList*>(lists->objectAtIndex(i));
+				// 在此处使用 list
+				bool containsLevel = false;
+				auto levelsArray = list->getListLevelsArray(CCArray::create());
+				if (levelsArray) {
+					for (auto j = 0; j < levelsArray->count(); j++) {
+						auto lvl = static_cast<GJGameLevel*>(levelsArray->objectAtIndex(j));
+						if(lvl->m_levelID == level->m_levelID){
+							matched_count++;
+							containsLevel=true;
+							break;
+						}
+						// 在此处使用 level
+					}
+				}
+				if(containsLevel){
+					m_fields->listNames.push_back(list->m_listName);
+				}
+			}
+		}
+
+		// 移除旧节点防止复用卡死
+		this->removeChildByID("inListsMenu"_spr);
+		
+		auto labelSprite = CCSprite::createWithSpriteFrameName("GJ_listAddBtn_001.png");
+		labelSprite->setScale(0.45);
+
+		auto listsCountLabel = CCLabelBMFont::create(
+			geode::utils::numToString(matched_count).c_str(), "bigFont.fnt"
+		);
+		listsCountLabel->setID("listsCountLabel"_spr);
+		listsCountLabel->setScale(0.8);
+		listsCountLabel->setPosition(35,-5);
+		listsCountLabel->setAnchorPoint(ccp(1,0));
+		labelSprite->addChild(listsCountLabel);
+
+		auto listsButton = CCMenuItemSpriteExtra::create(
+			labelSprite,
+			this,
+			menu_selector(MyLevelCell::onClickedButton)
+		);
+		listsButton->setID("listsButton"_spr);
+		listsButton->setPosition(0,0);
+
+		
+		auto menu = CCMenu::create();
+		menu->setID("listsMenu"_spr);
+		menu->addChild(listsButton);
+		menu->alignItemsHorizontallyWithPadding(2.0f);
+		menu->setPosition(340,70);
+
+		auto main_layer = this->getChildByID("main-layer");
+		main_layer->addChild(menu);
+	}
+
+	void onClickedButton(CCObject*){
+		std::string namesStr;
+		for (auto it = m_fields->listNames.begin(); it != m_fields->listNames.end(); ++it) {
+			if (it != m_fields->listNames.begin()) namesStr += ", ";
+			namesStr += *it;
+		}
+		FLAlertLayer::create(fmt::format("Lists containing {}",this->m_level->m_levelName).c_str(), namesStr.c_str(), "OK")->show();
+	}
+};
