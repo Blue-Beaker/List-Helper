@@ -111,7 +111,8 @@ class $modify(MyMenuLayer, CreatorLayer) {
 
 class $modify(MyLevelCell, LevelCell) {
 	struct Fields {
-		std::list<gd::string> listNames = {};
+		std::list<gd::string> favListNames = {};
+		std::list<gd::string> createdListNames = {};
 		gd::string levelName = "";
 	};
 
@@ -121,41 +122,29 @@ class $modify(MyLevelCell, LevelCell) {
 		m_fields->levelName = level->m_levelName;
 
 		auto manager = GameLevelManager::get();
+		auto manager1 = LocalLevelManager::get();
 
-		int matched_count = 0;
-		m_fields->listNames.clear();
-		auto lists = manager->getSavedLevelLists(0);
-		if (lists) {
-			for (auto i = 0; i < lists->count(); i++) {
-				auto list = static_cast<GJLevelList*>(lists->objectAtIndex(i));
-				// 在此处使用 list
-				bool containsLevel = false;
-				auto levelsArray = list->getListLevelsArray(CCArray::create());
-				if (levelsArray) {
-					for (auto j = 0; j < levelsArray->count(); j++) {
-						auto lvl = static_cast<GJGameLevel*>(levelsArray->objectAtIndex(j));
-						if(lvl->m_levelID == level->m_levelID){
-							matched_count++;
-							containsLevel=true;
-							break;
-						}
-						// 在此处使用 level
-					}
-				}
-				if(containsLevel){
-					m_fields->listNames.push_back(list->m_listName);
-				}
-			}
-		}
+		m_fields->favListNames.clear();
+		m_fields->createdListNames.clear();
 
-		// 移除旧节点防止复用卡死
+        m_fields->favListNames = getListsForLevel(manager->getSavedLevelLists(0), level);
+
+        m_fields->createdListNames = getListsForLevel(manager1->getCreatedLists(0), level);
+
+        // Remove old node
 		this->removeChildByID("inListsMenu"_spr);
+
+		// If not contained in any lists, do not add the button
+		if(m_fields->createdListNames.empty() && m_fields->favListNames.empty()){
+			return;
+		}
 		
+		// Add the button
 		auto labelSprite = CCSprite::createWithSpriteFrameName("GJ_listAddBtn_001.png");
 		labelSprite->setScale(0.45);
 
 		auto listsCountLabel = CCLabelBMFont::create(
-			geode::utils::numToString(matched_count).c_str(), "bigFont.fnt"
+			fmt::format("{}/{}",m_fields->createdListNames.size(),m_fields->favListNames.size()).c_str(), "bigFont.fnt"
 		);
 		listsCountLabel->setID("listsCountLabel"_spr);
 		listsCountLabel->setScale(0.8);
@@ -179,14 +168,62 @@ class $modify(MyLevelCell, LevelCell) {
 
 		auto main_layer = this->getChildByID("main-layer");
 		main_layer->addChild(menu);
-	}
+    }
 
-	void onClickedButton(CCObject*){
+    std::list<gd::string> getListsForLevel(cocos2d::CCArray * lists, GJGameLevel * level)
+    {
+ 		std::list<gd::string> listNames = {};
+        if (lists)
+        {
+            for (auto i = 0; i < lists->count(); i++)
+            {
+                auto list = static_cast<GJLevelList *>(lists->objectAtIndex(i));
+                bool containsLevel = false;
+                auto levelsArray = list->getListLevelsArray(CCArray::create());
+                if (levelsArray)
+                {
+                    for (auto j = 0; j < levelsArray->count(); j++)
+                    {
+                        auto lvl = static_cast<GJGameLevel *>(levelsArray->objectAtIndex(j));
+                        if (lvl->m_levelID == level->m_levelID)
+                        {
+                            containsLevel = true;
+                            break;
+                        }
+                    }
+                }
+                if (containsLevel)
+                {
+                    listNames.push_back(list->m_listName);
+                }
+            }
+        }
+		return listNames;
+    }
+    void onClickedButton(CCObject*){
 		std::string namesStr;
-		for (auto it = m_fields->listNames.begin(); it != m_fields->listNames.end(); ++it) {
-			if (it != m_fields->listNames.begin()) namesStr += ", ";
-			namesStr += *it;
+		if(!m_fields->createdListNames.empty()){
+			namesStr += "Created Lists:\n";
+			namesToString(m_fields->createdListNames, namesStr);
 		}
-		FLAlertLayer::create(fmt::format("Lists containing {}", m_fields->levelName).c_str(), namesStr.c_str(), "OK")->show();
-	}
+		if (!m_fields->createdListNames.empty() && !m_fields->favListNames.empty()){
+			namesStr+="\n";
+		}
+		if(!m_fields->favListNames.empty()){
+			namesStr += "Favorite Lists:\n";
+			namesToString(m_fields->favListNames, namesStr);
+		}
+
+        FLAlertLayer::create(fmt::format("Lists containing {}", m_fields->levelName).c_str(), namesStr.c_str(), "OK")->show();
+    }
+
+    void namesToString(std::list<gd::string> & favListNames, std::string & namesStr)
+    {
+        for (auto it = favListNames.begin(); it != favListNames.end(); ++it)
+        {
+            if (it != favListNames.begin())
+                namesStr += ", ";
+            namesStr += *it;
+        }
+    }
 };
