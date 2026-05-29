@@ -47,25 +47,45 @@ class $modify(MyLevelCell, LevelCell) {
 			return;
 		}
 		
+        auto button = CCNode::create();
+
 		// Add the button
 		auto labelSprite = CCSprite::createWithSpriteFrameName("GJ_listAddBtn_001.png");
+
+        float maxLabelScale;
 		if(this->m_compactView){
 			labelSprite->setScale(0.3);
+            maxLabelScale=0.3;
 		}else{
 			labelSprite->setScale(0.45);
+            maxLabelScale=0.4;
 		}
+
 
 		auto listsCountLabel = CCLabelBMFont::create(
 			fmt::format("{}/{}",m_fields->createdListNames.size(),m_fields->favListNames.size()).c_str(), "bigFont.fnt"
 		);
 		listsCountLabel->setID("listsCountLabel"_spr);
-		listsCountLabel->setScale(std::min(1.0f,90.0f/listsCountLabel->getContentWidth()));
-		listsCountLabel->setPosition(35,labelSprite->getContentHeight()/2);
+		listsCountLabel->setScale(std::min(maxLabelScale,50.0f/listsCountLabel->getContentWidth()));
+
+        float height = std::max(labelSprite->getScaledContentHeight(),listsCountLabel->getScaledContentHeight());
+
+        labelSprite->setPosition(ccp(0,height/2));
+        labelSprite->setAnchorPoint(ccp(0,0.5));
+		listsCountLabel->setPosition(labelSprite->getScaledContentWidth(),height/2);
 		listsCountLabel->setAnchorPoint(ccp(0,0.5));
-		labelSprite->addChild(listsCountLabel);
+
+        button->addChild(labelSprite);
+		button->addChild(listsCountLabel);
+
+        button->setContentWidth(labelSprite->getScaledContentWidth()+listsCountLabel->getScaledContentWidth());
+        button->setContentHeight(height);
+
+        button->setAnchorPoint(ccp(0.5,0.5));
+		// labelSprite->addChild(listsCountLabel);
 
 		auto listsButton = CCMenuItemSpriteExtra::create(
-			labelSprite,
+			button,
 			this,
 			menu_selector(MyLevelCell::onClickedButton)
 		);
