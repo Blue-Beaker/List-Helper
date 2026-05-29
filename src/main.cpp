@@ -112,11 +112,13 @@ class $modify(MyMenuLayer, CreatorLayer) {
 class $modify(MyLevelCell, LevelCell) {
 	struct Fields {
 		std::list<gd::string> listNames = {};
+		gd::string levelName = "";
 	};
 
 	void loadFromLevel(GJGameLevel* level) {
 		
 		LevelCell::loadFromLevel(level);
+		m_fields->levelName = level->m_levelName;
 
 		auto manager = GameLevelManager::get();
 
@@ -169,7 +171,6 @@ class $modify(MyLevelCell, LevelCell) {
 		listsButton->setID("listsButton"_spr);
 		listsButton->setPosition(0,0);
 
-		
 		auto menu = CCMenu::create();
 		menu->setID("listsMenu"_spr);
 		menu->addChild(listsButton);
@@ -186,6 +187,6 @@ class $modify(MyLevelCell, LevelCell) {
 			if (it != m_fields->listNames.begin()) namesStr += ", ";
 			namesStr += *it;
 		}
-		FLAlertLayer::create(fmt::format("Lists containing {}",this->m_level->m_levelName).c_str(), namesStr.c_str(), "OK")->show();
+		FLAlertLayer::create(fmt::format("Lists containing {}", m_fields->levelName).c_str(), namesStr.c_str(), "OK")->show();
 	}
 };
