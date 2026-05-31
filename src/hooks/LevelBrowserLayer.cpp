@@ -94,17 +94,20 @@ protected:
             CCMenuItemSpriteExtra* actionBtn;
             if (m_pickedIndex < 0) {
                 // Normal mode: pick button
-                auto pickSprite = CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");
-                pickSprite->setScale(0.55f);
+                auto pickSprite = CircleButtonSprite::createWithSpriteFrameName(
+                    "edit_flipYBtn_001.png",
+                    1.0f,
+                    CircleBaseColor::Green,
+                    CircleBaseSize::Tiny
+                );
                 actionBtn = CCMenuItemSpriteExtra::create(
                     pickSprite, this, menu_selector(MyPopup::onPick)
                 );
                 actionBtn->setID(fmt::format("pick-btn-{}", i));
             } else {
                 // Place mode: place button
-                auto placeSprite = CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");
+                auto placeSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
                 placeSprite->setScale(0.55f);
-                placeSprite->setColor(ccc3(0x6a, 0xaa, 0x3c));
                 actionBtn = CCMenuItemSpriteExtra::create(
                     placeSprite, this, menu_selector(MyPopup::onPlace)
                 );
@@ -115,8 +118,8 @@ protected:
             auto btnMenu = CCMenu::create();
             btnMenu->setID(fmt::format("btn-menu-{}", i));
             btnMenu->addChild(upBtn);
-            btnMenu->addChild(actionBtn);
             btnMenu->addChild(downBtn);
+            btnMenu->addChild(actionBtn);
             btnMenu->setPosition(ccp(220, 15.f));
             btnMenu->alignItemsHorizontallyWithPadding(2.f);
             row->addChild(btnMenu);
