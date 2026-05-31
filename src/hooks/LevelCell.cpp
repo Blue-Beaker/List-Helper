@@ -106,6 +106,7 @@ class $modify(MyLevelCell, LevelCell) {
 		}
 
 		auto main_layer = this->getChildByID("main-layer");
+        if(main_layer==nullptr) return;
 		main_layer->addChild(menu);
     }
 
