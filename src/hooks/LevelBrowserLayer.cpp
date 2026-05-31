@@ -189,6 +189,14 @@ protected:
         rebuildList();
     }
 
+    void onClose(CCObject* sender) override {
+        Popup::onClose(sender);
+        // Refresh the LevelBrowserLayer to reflect reordered lists
+        if (auto browserLayer = CCScene::get()->getChildByType<LevelBrowserLayer>(0)) {
+            browserLayer->onRefresh(sender);
+        }
+    }
+
 public:
     static MyPopup* create(cocos2d::CCArray * lists) {
         auto ret = new MyPopup();
