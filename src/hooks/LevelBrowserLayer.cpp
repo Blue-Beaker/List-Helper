@@ -27,6 +27,8 @@ protected:
         m_scrollLayer->setPosition(ccp(15, 45));
         m_mainLayer->addChild(m_scrollLayer);
 
+        m_scrollLayer->scrollToTop();
+
         return true;
     }
 
@@ -49,9 +51,23 @@ protected:
             );
             nameLabel->setScale(0.35f);
             nameLabel->setAnchorPoint(ccp(0, 0.5f));
-            nameLabel->setPosition(ccp(5, 15.f));
+            nameLabel->setPosition(ccp(28, 15.f));
             nameLabel->setID("name-label");
             row->addChild(nameLabel);
+
+            // Difficulty icon using the list's difficulty frame
+            auto diffFrame = GJLevelList::frameForListDifficulty(list->m_difficulty, DifficultyIconType::ShortText);
+            auto diffSprite = CCSprite::createWithSpriteFrameName(diffFrame.c_str());
+            if (list->m_difficulty==-1) {
+                // Fallback: use the NA difficulty frame directly
+                diffSprite = CCSprite::createWithSpriteFrameName("difficulty_00_btn_001.png");
+            }
+            if (diffSprite) {
+                diffSprite->setScale(0.55f);
+                diffSprite->setPosition(ccp(15, 15.f));
+                diffSprite->setID("diff-icon");
+                row->addChild(diffSprite);
+            }
 
             // Up button
             auto upSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
