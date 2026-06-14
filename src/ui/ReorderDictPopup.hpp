@@ -6,7 +6,7 @@
 /// converts it to an array internally, allows reordering,
 /// and applies the new order back to the dict on close.
 ///
-/// Subclasses must implement setupRow() and getTitle().
+/// Subclasses must implement setupRow().
 class ReorderDictPopup : public ReorderListPopup {
 protected:
     /// The original dictionary
@@ -19,7 +19,7 @@ protected:
     /// and rebuild the dict on close.
     std::vector<gd::string> m_originalKeys;
 
-    bool init(cocos2d::CCDictionary* dict);
+    bool init(cocos2d::CCDictionary* dict, const std::string& title);
     void onClose(cocos2d::CCObject* sender) override;
 
     /// Called after the dictionary has been updated (or skipped if not dirty)

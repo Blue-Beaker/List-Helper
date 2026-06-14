@@ -44,13 +44,13 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
     void onClickedButton(CCObject*){
         auto searchType = this->m_searchObject->m_searchType;
         if(searchType == SearchType::MyLists){
-            SortListsPopup::create(LocalLevelManager::get()->m_localLists)->show();
+            SortListsPopup::create(LocalLevelManager::get()->m_localLists, "Sort Lists")->show();
         }else if (searchType == SearchType::FavouriteLists){
-            if (auto popup = DictSortListPopup::create(GameLevelManager::get()->m_favoriteLists)) {
+            if (auto popup = DictSortListPopup::create(GameLevelManager::get()->m_favoriteLists, "Sort Favorite Lists")) {
                 popup->show();
             }
         }else if(searchType==SearchType::MyLevels){
-            SortLevelsPopup::create(LocalLevelManager::get()->m_localLevels)->show();
+            SortLevelsPopup::create(LocalLevelManager::get()->m_localLevels, "Sort Levels")->show();
         }else if(searchType==SearchType::SavedLevels){
         }
     }

@@ -1,10 +1,6 @@
 #include "SortListsPopup.hpp"
 #include "../utils.hpp"
 
-std::string SortListsPopup::getTitle() const {
-    return "Sort Lists";
-}
-
 CCNode* SortListsPopup::setupRow(int index) {
     auto list = static_cast<GJLevelList*>(m_lists->objectAtIndex(index));
     auto row = CCNode::create();
@@ -44,9 +40,9 @@ void SortListsPopup::onClose(CCObject* sender) {
     }
 }
 
-SortListsPopup* SortListsPopup::create(cocos2d::CCArray* lists) {
+SortListsPopup* SortListsPopup::create(cocos2d::CCArray* lists, const std::string& title) {
     auto ret = new SortListsPopup();
-    if (ret->init(lists)) {
+    if (ret->init(lists, title)) {
         ret->autorelease();
         return ret;
     }

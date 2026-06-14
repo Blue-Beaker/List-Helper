@@ -1,10 +1,6 @@
 #include "SortLevelsPopup.hpp"
 #include "../utils.hpp"
 
-std::string SortLevelsPopup::getTitle() const {
-    return "Sort Levels";
-}
-
 CCNode* SortLevelsPopup::setupRow(int index) {
     auto level = static_cast<GJGameLevel*>(m_lists->objectAtIndex(index));
     auto row = CCNode::create();
@@ -46,9 +42,9 @@ void SortLevelsPopup::onClose(CCObject* sender) {
     }
 }
 
-SortLevelsPopup* SortLevelsPopup::create(cocos2d::CCArray* levels) {
+SortLevelsPopup* SortLevelsPopup::create(cocos2d::CCArray* levels, const std::string& title) {
     auto ret = new SortLevelsPopup();
-    if (ret->init(levels)) {
+    if (ret->init(levels, title)) {
         ret->autorelease();
         return ret;
     }

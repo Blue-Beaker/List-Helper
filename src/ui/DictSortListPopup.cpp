@@ -1,10 +1,6 @@
 #include "DictSortListPopup.hpp"
 #include "../utils.hpp"
 
-std::string DictSortListPopup::getTitle() const {
-    return "Sort Favorite Lists";
-}
-
 CCNode* DictSortListPopup::setupRow(int index) {
     auto list = static_cast<GJLevelList*>(m_lists->objectAtIndex(index));
     if (!list) return CCNode::create();
@@ -44,11 +40,11 @@ gd::string DictSortListPopup::keyForObject(cocos2d::CCObject* obj, int index) co
     return fmt::format("{}", list->m_listID);
 }
 
-DictSortListPopup* DictSortListPopup::create(cocos2d::CCDictionary* dict) {
+DictSortListPopup* DictSortListPopup::create(cocos2d::CCDictionary* dict, const std::string& title) {
     if (!dict) return nullptr;
 
     auto ret = new DictSortListPopup();
-    if (ret->init(dict)) {
+    if (ret->init(dict, title)) {
         ret->autorelease();
         return ret;
     }

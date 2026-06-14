@@ -1,6 +1,6 @@
 #include "ReorderDictPopup.hpp"
 
-bool ReorderDictPopup::init(cocos2d::CCDictionary* dict) {
+bool ReorderDictPopup::init(cocos2d::CCDictionary* dict, const std::string& title) {
     m_dict = dict;
 
     // Use allKeys() which returns CCArray of CCString*, then look up each one.
@@ -20,7 +20,7 @@ bool ReorderDictPopup::init(cocos2d::CCDictionary* dict) {
     m_retainedArray = lists;
     m_retainedArray->retain();
 
-    return ReorderListPopup::init(lists);
+    return ReorderListPopup::init(lists, title);
 }
 
 gd::string ReorderDictPopup::keyForObject(cocos2d::CCObject* obj, int index) const {

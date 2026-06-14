@@ -1,10 +1,11 @@
 #include "ReorderListPopup.hpp"
 
-bool ReorderListPopup::init(cocos2d::CCArray* lists) {
+bool ReorderListPopup::init(cocos2d::CCArray* lists, const std::string& title) {
     if (!Popup::init(280.f, 290.f))
         return false;
 
-    this->setTitle(getTitle());
+    m_title = title;
+    this->setTitle(m_title);
     m_lists = lists;
 
     m_scrollLayer = geode::ScrollLayer::create({ 250.f, 200.f });
