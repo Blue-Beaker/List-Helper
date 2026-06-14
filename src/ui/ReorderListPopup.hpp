@@ -19,8 +19,8 @@ protected:
     /// Subclasses must implement this to provide the popup title.
     virtual std::string getTitle() const = 0;
 
-    void onMoveUp(cocos2d::CCObject* sender);
-    void onMoveDown(cocos2d::CCObject* sender);
-    void onPick(cocos2d::CCObject* sender);
-    void onPlace(cocos2d::CCObject* sender);
+    virtual void onMoveUp(cocos2d::CCObject* sender);
+    virtual void onMoveDown(cocos2d::CCObject* sender);
+    virtual void onPick(cocos2d::CCObject* sender);
+    virtual void onPlace(cocos2d::CCObject* sender);
 };

@@ -2,6 +2,7 @@
 #include "../utils.hpp"
 #include "../ui/SortListsPopup.hpp"
 #include "../ui/SortLevelsPopup.hpp"
+#include "../ui/DictSortListPopup.hpp"
 #include <Geode/modify/LevelBrowserLayer.hpp>
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
@@ -45,19 +46,9 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
         if(searchType == SearchType::MyLists){
             SortListsPopup::create(LocalLevelManager::get()->m_localLists)->show();
         }else if (searchType == SearchType::FavouriteLists){
-            // m_favoriteLists is a CCDictionary: key = listID (int), value = GJLevelList*
-            auto dict = GameLevelManager::get()->m_favoriteLists;
-            auto lists = CCArray::create();
-            if (dict) {
-                auto keys = dict->allKeys();
-                for (auto i = 0; i < keys->count(); i++) {
-                    auto key = static_cast<CCString*>(keys->objectAtIndex(i));
-                    int listID = key->intValue();
-                    auto list = static_cast<GJLevelList*>(dict->objectForKey(listID));
-                    if (list) lists->addObject(list);
-                }
+            if (auto popup = DictSortListPopup::create(GameLevelManager::get()->m_favoriteLists)) {
+                popup->show();
             }
-            SortListsPopup::create(lists)->show();
         }else if(searchType==SearchType::MyLevels){
             SortLevelsPopup::create(LocalLevelManager::get()->m_localLevels)->show();
         }else if(searchType==SearchType::SavedLevels){
