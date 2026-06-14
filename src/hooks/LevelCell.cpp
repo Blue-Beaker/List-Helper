@@ -12,6 +12,10 @@ class $modify(MyLevelCell, LevelCell) {
 	void loadFromLevel(GJGameLevel* level) {
 		
 		LevelCell::loadFromLevel(level);
+		
+		if(!Mod::get()->getSettingValue<bool>("level-cell-info")){
+			return;
+		}
 
 		if(level->m_levelID<=100){
 			return;

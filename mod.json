@@ -13,5 +13,23 @@
 	"description": "",
 	"dependencies": {
 		"geode.node-ids": ">=v1.23.3"
+	},
+	"settings": {
+		"general":{
+			"name": "General",
+			"type": "title"
+		},
+		"level-cell-info":{
+			"name": "Level Cell Info",
+			"type": "bool",
+			"default":true,
+			"description": "Shows a label for how many created/favorite lists contains this level. Click this label to see the lists with the level."
+		},
+		"lists-sort":{
+			"name": "Lists Sorting",
+			"type": "bool",
+			"default":true,
+			"description": "Shows a button to sort created lists."
+		}
 	}
 }

@@ -9,6 +9,10 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
         
         // Limit the button to only saved and favorite lists
         if(this->m_searchObject==nullptr) return true;
+        // Config
+		if(!Mod::get()->getSettingValue<bool>("lists-sort")){
+			return true;
+		}
         auto searchType = this->m_searchObject->m_searchType;
         if(searchType != SearchType::MyLists && searchType != SearchType::FavouriteLists) return true;
         
