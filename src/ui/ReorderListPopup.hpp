@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../main.hpp"
+#include <Geode/ui/ScrollLayer.hpp>
 
-class MyPopup : public geode::Popup {
+class ReorderListPopup : public geode::Popup {
 protected:
     cocos2d::CCArray* m_lists;
     geode::ScrollLayer* m_scrollLayer;
@@ -10,12 +11,16 @@ protected:
 
     bool init(cocos2d::CCArray* lists);
     void rebuildList();
+
+    /// Subclasses must implement this to draw a row for the item at the given index.
+    /// The row node should have content size { 250.f, 30.f }.
+    virtual CCNode* setupRow(int index) = 0;
+
+    /// Subclasses must implement this to provide the popup title.
+    virtual std::string getTitle() const = 0;
+
     void onMoveUp(cocos2d::CCObject* sender);
     void onMoveDown(cocos2d::CCObject* sender);
     void onPick(cocos2d::CCObject* sender);
     void onPlace(cocos2d::CCObject* sender);
-    void onClose(cocos2d::CCObject* sender);
-
-public:
-    static MyPopup* create(cocos2d::CCArray* lists);
 };

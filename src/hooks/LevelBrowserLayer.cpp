@@ -1,6 +1,6 @@
 #include "../main.hpp"
 #include "../utils.hpp"
-#include "../ui/MyPopup.hpp"
+#include "../ui/ListOfListsPopup.hpp"
 #include <Geode/modify/LevelBrowserLayer.hpp>
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
@@ -37,7 +37,7 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
     void onClickedButton(CCObject*){
         auto searchType = this->m_searchObject->m_searchType;
         if(searchType == SearchType::MyLists){
-            MyPopup::create(LocalLevelManager::get()->m_localLists)->show();
+            ReorderListsPopup::create(LocalLevelManager::get()->m_localLists)->show();
         }else if (searchType == SearchType::FavouriteLists){
             // m_favoriteLists is a CCDictionary: key = listID (int), value = GJLevelList*
             auto dict = GameLevelManager::get()->m_favoriteLists;
@@ -51,7 +51,7 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
                     if (list) lists->addObject(list);
                 }
             }
-            MyPopup::create(lists)->show();
+            ReorderListsPopup::create(lists)->show();
         }
     }
 };
