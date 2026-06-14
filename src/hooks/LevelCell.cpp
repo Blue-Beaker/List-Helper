@@ -100,9 +100,12 @@ class $modify(MyLevelCell, LevelCell) {
 		if(this->m_compactView){
 			// List
 			menu->setPosition(260,8.5);
-		}else{
+		}else if(this->m_height>89){
 			// Level Search, Saved levels...
 			menu->setPosition(310,70);
+		}else{
+			// Created levels...
+			menu->setPosition(310,60);
 		}
 
 		auto main_layer = this->getChildByID("main-layer");
