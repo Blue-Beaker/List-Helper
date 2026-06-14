@@ -1,20 +1,26 @@
 #include "../main.hpp"
 #include "../utils.hpp"
 #include "../ui/ListOfListsPopup.hpp"
+#include "../ui/SortLevelsPopup.hpp"
 #include <Geode/modify/LevelBrowserLayer.hpp>
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
     bool init(GJSearchObject* object) {
         if (!LevelBrowserLayer::init(object)) return false;
         
-        // Limit the button to only saved and favorite lists
         if(this->m_searchObject==nullptr) return true;
+
         // Config
 		if(!Mod::get()->getSettingValue<bool>("lists-sort")){
 			return true;
 		}
+
+        // Limit the button to only saved and favorite lists
         auto searchType = this->m_searchObject->m_searchType;
-        if(searchType != SearchType::MyLists && searchType != SearchType::FavouriteLists) return true;
+        if(searchType != SearchType::MyLists
+            && searchType != SearchType::FavouriteLists
+            && searchType != SearchType::MyLevels
+            && searchType != SearchType::SavedLevels) return true;
         
 		auto reorderListsButton = CCMenuItemSpriteExtra::create(
 			CircleButtonSprite::createWithSpriteFrameName(
@@ -52,6 +58,9 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
                 }
             }
             ReorderListsPopup::create(lists)->show();
+        }else if(searchType==SearchType::MyLevels){
+            SortLevelsPopup::create(LocalLevelManager::get()->m_localLevels)->show();
+        }else if(searchType==SearchType::SavedLevels){
         }
     }
 };
