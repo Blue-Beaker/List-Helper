@@ -1,11 +1,11 @@
-#include "ListOfListsPopup.hpp"
+#include "SortListsPopup.hpp"
 #include "../utils.hpp"
 
-std::string ReorderListsPopup::getTitle() const {
+std::string SortListsPopup::getTitle() const {
     return "Sort Lists";
 }
 
-CCNode* ReorderListsPopup::setupRow(int index) {
+CCNode* SortListsPopup::setupRow(int index) {
     auto list = static_cast<GJLevelList*>(m_lists->objectAtIndex(index));
     auto row = CCNode::create();
     row->setContentSize({ 250.f, 30.f });
@@ -36,7 +36,7 @@ CCNode* ReorderListsPopup::setupRow(int index) {
     return row;
 }
 
-void ReorderListsPopup::onClose(CCObject* sender) {
+void SortListsPopup::onClose(CCObject* sender) {
     Popup::onClose(sender);
     // Refresh the LevelBrowserLayer to reflect reordered lists
     if (auto browserLayer = CCScene::get()->getChildByType<LevelBrowserLayer>(0)) {
@@ -44,8 +44,8 @@ void ReorderListsPopup::onClose(CCObject* sender) {
     }
 }
 
-ReorderListsPopup* ReorderListsPopup::create(cocos2d::CCArray* lists) {
-    auto ret = new ReorderListsPopup();
+SortListsPopup* SortListsPopup::create(cocos2d::CCArray* lists) {
+    auto ret = new SortListsPopup();
     if (ret->init(lists)) {
         ret->autorelease();
         return ret;
