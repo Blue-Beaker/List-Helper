@@ -3,6 +3,7 @@
 #include "../ui/SortListsPopup.hpp"
 #include "../ui/SortLevelsPopup.hpp"
 #include "../ui/DictSortListPopup.hpp"
+#include "../ui/SortSavedLevelsPopup.hpp"
 #include <Geode/modify/LevelBrowserLayer.hpp>
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
@@ -46,12 +47,25 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
         if(searchType == SearchType::MyLists){
             SortListsPopup::create(LocalLevelManager::get()->m_localLists, "Sort Lists")->show();
         }else if (searchType == SearchType::FavouriteLists){
-            if (auto popup = DictSortListPopup::create(GameLevelManager::get()->m_favoriteLists, "Sort Favorite Lists")) {
+            if (auto popup = DictSortListPopup::create(GameLevelManager::get()->m_favoriteLists, "Sort Lists")) {
                 popup->show();
             }
         }else if(searchType==SearchType::MyLevels){
             SortLevelsPopup::create(LocalLevelManager::get()->m_localLevels, "Sort Levels")->show();
         }else if(searchType==SearchType::SavedLevels){
+            // Copy the saved levels array, skipping any null entries
+            auto savedLevels = GameLevelManager::get()->getSavedLevels(false, 0);
+            auto savedLevelsCopy = CCArray::create();
+            if (savedLevels) {
+                for (int i = 0; i < savedLevels->count(); i++) {
+                    if (auto obj = savedLevels->objectAtIndex(i)) {
+                        savedLevelsCopy->addObject(obj);
+                    }
+                }
+            }
+            if (auto popup = SortSavedLevelsPopup::create(savedLevelsCopy, "Sort Levels")) {
+                popup->show();
+            }
         }
     }
 };
