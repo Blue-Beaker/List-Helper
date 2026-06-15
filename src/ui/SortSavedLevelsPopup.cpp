@@ -1,4 +1,5 @@
 #include "SortSavedLevelsPopup.hpp"
+#include "../utils.hpp"
 
 bool SortSavedLevelsPopup::init(cocos2d::CCArray* levels, const std::string& title) {
     if (!Popup::init(280.f, 290.f))
@@ -68,38 +69,7 @@ CCNode* SortSavedLevelsPopup::setupRow(int displayIndex) {
     int actualIdx = m_order[displayIndex];
     if (actualIdx < 0 || actualIdx >= m_levels->count()) return nullptr;
     auto level = static_cast<GJGameLevel*>(m_levels->objectAtIndex(actualIdx));
-    if (!level) return nullptr;
-
-    auto row = CCNode::create();
-    row->setContentSize({ 250.f, 30.f });
-
-    // Level name label
-    auto nameLabel = CCLabelBMFont::create(
-        level->m_levelName.c_str(), "bigFont.fnt"
-    );
-    nameLabel->setScale(0.35f);
-    nameLabel->setAnchorPoint(ccp(0, 0.5f));
-    nameLabel->setPosition(ccp(28, 15.f));
-    nameLabel->setID("name-label");
-    row->addChild(nameLabel);
-
-    // Difficulty icon
-    int level_diff;
-    if(level->m_demon){
-        level_diff=GJGameLevel::demonIconForDifficulty(DemonDifficultyType(level->m_demonDifficulty));
-    }else{
-        level_diff=level->getAverageDifficulty();
-    }
-    auto diff = GJDifficultySprite::getDifficultyFrame(level_diff, GJDifficultyName::Short);
-    auto diffSprite = CCSprite::createWithSpriteFrameName(diff.c_str());
-    if (diffSprite) {
-        diffSprite->setScale(0.55f);
-        diffSprite->setPosition(ccp(15, 15.f));
-        diffSprite->setID("diff-icon");
-        row->addChild(diffSprite);
-    }
-
-    return row;
+    return createLevelRow(level);
 }
 
 CCMenu* SortSavedLevelsPopup::setupButtonMenu(int displayIndex) {
